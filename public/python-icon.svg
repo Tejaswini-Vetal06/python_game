@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6" />
+      <stop offset="100%" stop-color="#ec4899" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="glow" />
+      <feComposite in="SourceGraphic" in2="glow" operator="over" />
+    </filter>
+  </defs>
+  <rect width="100" height="100" rx="24" fill="#0a0e1a" stroke="#253252" stroke-width="2"/>
+  <!-- Gaming Shield / Badge shape -->
+  <path d="M50 15 L80 28 L80 55 C80 72 67 84 50 89 C33 84 20 72 20 55 L20 28 Z" fill="#121829" stroke="url(#grad2)" stroke-width="2.5" filter="url(#glow)"/>
+  <!-- Python stylised snakes -->
+  <path d="M48 28 C38 28 32 33 32 40 L32 46 L48 46 L48 49 L27 49 C21 49 19 54 19 60 C19 66 23 71 31 71 L36 71 L36 63 C36 57 41 52 47 52 L54 52 C59 52 63 48 63 43 L63 35 C63 30 57 28 48 28 Z M40 34 C41.6 34 43 35.3 43 37 C43 38.6 41.6 40 40 40 C38.3 40 37 38.6 37 37 C37 35.3 38.3 34 40 34 Z" fill="url(#grad1)" opacity="0.9"/>
+  <path d="M52 72 C62 72 68 67 68 60 L68 54 L52 54 L52 51 L73 51 C79 51 81 46 81 40 C81 34 77 29 69 29 L64 29 L64 37 C64 43 59 48 53 48 L46 48 C41 48 37 52 37 57 L37 65 C37 70 43 72 52 72 Z M60 66 C58.3 66 57 64.6 57 63 C57 61.3 58.3 60 60 60 C61.6 60 63 61.3 63 63 C63 64.6 61.6 66 60 66 Z" fill="url(#grad2)" opacity="0.95"/>
+</svg>
