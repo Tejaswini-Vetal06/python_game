@@ -156,6 +156,3 @@ vercel
 
 ---
 
-## 🛡️ License
-
-MIT License. Designed and built with Google Antigravity.
