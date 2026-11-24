@@ -2,7 +2,7 @@ import React from 'react';
 import { useUser } from '../../context/UserContext';
 import { useGame } from '../../context/GameContext';
 import { TRANSLATIONS } from '../../constants/translations';
-import { Flame, Sparkles, Globe, Volume2, VolumeX, Shield } from 'lucide-react';
+import { Flame, Sparkles, Globe, Volume2, VolumeX, Shield, Video, History } from 'lucide-react';
 import { LanguageCode } from '../../types/challenge';
 
 interface HeaderProps {
@@ -53,7 +53,7 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="text-sm sm:text-base font-extrabold tracking-tight text-white flex items-center gap-1.5">
               <span>{t.appName}</span>
               <span className="hidden sm:inline-block px-1.5 py-0.2 bg-game-purple/20 border border-game-purple/40 rounded text-[10px] text-game-purpleLight font-mono">
-                BETA
+                PWA
               </span>
             </div>
             <div className="hidden xs:block text-[11px] text-game-textMuted -mt-0.5 font-medium">
@@ -94,6 +94,26 @@ export const Header: React.FC<HeaderProps> = ({
               {streak.currentStreak}
             </span>
           </div>
+
+          {/* Videos Shortcut */}
+          <button
+            onClick={() => onSelectScreen?.('videos')}
+            title="Video Masterclasses"
+            className="p-1.5 text-game-purpleLight hover:text-white rounded-xl bg-game-surface hover:bg-game-card border border-game-border transition-colors hidden sm:flex items-center gap-1 text-xs font-semibold"
+          >
+            <Video className="w-4 h-4 text-game-purpleLight" />
+            <span className="hidden lg:inline">Videos</span>
+          </button>
+
+          {/* Login & Security Log Shortcut */}
+          <button
+            onClick={() => onSelectScreen?.('login-history')}
+            title="Login & Security History"
+            className="p-1.5 text-game-cyan hover:text-white rounded-xl bg-game-surface hover:bg-game-card border border-game-border transition-colors hidden md:flex items-center gap-1 text-xs font-semibold"
+          >
+            <History className="w-4 h-4 text-game-cyan" />
+            <span className="hidden lg:inline">Logins</span>
+          </button>
 
           {/* Language Selector Button */}
           <button

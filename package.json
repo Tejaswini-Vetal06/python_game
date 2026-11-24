@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "test": "node --test tests/core_suite.test.mjs tests/challenge_integrity.test.mjs",
+    "test": "node --test tests/core_suite.test.mjs tests/challenge_integrity.test.mjs tests/features_v2.test.mjs",
     "lint": "oxlint",
     "preview": "vite preview"
   },

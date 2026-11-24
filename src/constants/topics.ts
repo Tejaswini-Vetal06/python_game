@@ -16,6 +16,23 @@ export const TOPICS: TopicMeta[] = [
       hi: 'पायथन में संख्याएं, बूलियन और मान स्टोर करना सीखें।',
       hinglish: 'Python me values store karna, numbers aur boolean types seekho.',
     },
+    video: {
+      youtubeId: 'kqtD5dpn9C8', // Python for Beginners - Variables
+      durationMinutes: 12,
+      instructor: 'Mosh Hamedani & Python Quest Academy',
+      keyTimestamps: [
+        { title: 'Declaring Variables & Memory', timeSec: 45 },
+        { title: 'Integers, Floats & Booleans', timeSec: 210 },
+        { title: 'Dynamic Typing & Casting', timeSec: 430 },
+        { title: 'PEP 8 Naming Conventions', timeSec: 620 },
+      ],
+      summaryNotes: [
+        'Variables in Python are dynamically typed; you do not specify types explicitly.',
+        'Use snake_case for variable names (e.g. user_score, total_coins).',
+        'Built-in types: int, float, str, bool, and NoneType.',
+        'Python caches small integers from -5 to 256 for performance.',
+      ],
+    },
   },
   {
     id: 'operators',
@@ -31,6 +48,23 @@ export const TOPICS: TopicMeta[] = [
       en: 'Perform arithmetic, comparisons, logical operations, and modulus math.',
       hi: 'अंकगणित, तुलना और तार्किक गणनाएं करना सीखें।',
       hinglish: 'Arithmetic calculation, comparisons aur logical operators use karna.',
+    },
+    video: {
+      youtubeId: 'v5MR5JnKcZI',
+      durationMinutes: 14,
+      instructor: 'Corey Schafer',
+      keyTimestamps: [
+        { title: 'Arithmetic (+, -, *, /, //, %, **)', timeSec: 30 },
+        { title: 'Comparison Operators (==, !=, <, >)', timeSec: 240 },
+        { title: 'Logical Operators (and, or, not)', timeSec: 480 },
+        { title: 'Bitwise Operators & Shifts', timeSec: 690 },
+      ],
+      summaryNotes: [
+        '/ always produces a float in Python 3; use // for floor integer division.',
+        '% (modulo) computes the remainder; great for checking odd/even numbers.',
+        '** is used for exponentiation (e.g., 2 ** 5 = 32).',
+        'is checks object identity, whereas == checks value equality.',
+      ],
     },
   },
   {
@@ -48,6 +82,23 @@ export const TOPICS: TopicMeta[] = [
       hi: 'input() फ़ंक्शन से डेटा लें और टाइप कास्टिंग करें।',
       hinglish: 'User se interactive input() lena aur type casting (int/float) karna.',
     },
+    video: {
+      youtubeId: 'Mrmq_56p95c',
+      durationMinutes: 10,
+      instructor: 'Tech With Tim',
+      keyTimestamps: [
+        { title: 'The input() function', timeSec: 25 },
+        { title: 'Type conversion: int() and float()', timeSec: 180 },
+        { title: 'Multiple inputs via split()', timeSec: 340 },
+        { title: 'Handling Input Whitespace & Errors', timeSec: 510 },
+      ],
+      summaryNotes: [
+        'input() always captures data as a string (str).',
+        'Always wrap input() with int() or float() before math operations.',
+        'Use .strip() to clean up stray whitespace or newlines.',
+        'Use input().split() to read multiple words on one line into a list.',
+      ],
+    },
   },
   {
     id: 'strings',
@@ -63,6 +114,23 @@ export const TOPICS: TopicMeta[] = [
       en: 'Master string indexing, slicing, concatenation, methods, and f-strings.',
       hi: 'स्ट्रिंग स्लाइसिंग, मेथड्स और f-strings में महारत हासिल करें।',
       hinglish: 'String slicing, upper/lower methods aur cool f-strings seekho.',
+    },
+    video: {
+      youtubeId: 'k9TUPpGqYTo',
+      durationMinutes: 15,
+      instructor: 'Corey Schafer',
+      keyTimestamps: [
+        { title: 'String Indexing & Negative Slicing', timeSec: 60 },
+        { title: 'Common Methods (.upper(), .replace())', timeSec: 320 },
+        { title: 'Modern f-strings formatting', timeSec: 560 },
+        { title: 'Splitting and Joining Strings', timeSec: 750 },
+      ],
+      summaryNotes: [
+        'Strings are immutable; methods return new strings rather than mutating.',
+        'Negative indices count from the end (s[-1] is the last char).',
+        'f-strings (f"Hi {name}") are faster and more readable than format() or %.',
+        'Slice syntax: s[start:stop:step] (e.g. s[::-1] reverses a string).',
+      ],
     },
   },
   {
@@ -80,6 +148,23 @@ export const TOPICS: TopicMeta[] = [
       hi: 'if, elif और else का उपयोग करके निर्णय लेने वाला कोड लिखें।',
       hinglish: 'Decisions lena: if, elif aur else statements ka magic.',
     },
+    video: {
+      youtubeId: 'DZwmZ8Usvnk',
+      durationMinutes: 13,
+      instructor: 'CS Dojo',
+      keyTimestamps: [
+        { title: 'if and else basics', timeSec: 40 },
+        { title: 'elif ladder and decision branching', timeSec: 260 },
+        { title: 'Short-circuit evaluation', timeSec: 480 },
+        { title: 'Ternary one-liner conditional', timeSec: 650 },
+      ],
+      summaryNotes: [
+        'Python uses indentation (4 spaces) to define conditional blocks.',
+        'Python evaluates conditions lazily using short-circuit logic.',
+        'Ternary syntax: "Pass" if score >= 50 else "Fail".',
+        'Python 3.10+ introduced pattern matching using match-case.',
+      ],
+    },
   },
   {
     id: 'loops',
@@ -95,6 +180,23 @@ export const TOPICS: TopicMeta[] = [
       en: 'Repeat actions seamlessly using for-in loops, while loops, and range().',
       hi: 'for और while लूप्स के साथ कोड को दोहराना और range() का उपयोग करना।',
       hinglish: 'for loops, while loops aur range() se repetitive tasks automate karo.',
+    },
+    video: {
+      youtubeId: '6iF8Xb7Z3wQ',
+      durationMinutes: 16,
+      instructor: 'Corey Schafer',
+      keyTimestamps: [
+        { title: 'for loops with range()', timeSec: 50 },
+        { title: 'while loops and loop conditions', timeSec: 360 },
+        { title: 'break and continue statements', timeSec: 580 },
+        { title: 'for-else and while-else blocks', timeSec: 810 },
+      ],
+      summaryNotes: [
+        'range(start, stop, step) generates sequence on the fly without storing in memory.',
+        'break immediately terminates the nearest enclosing loop.',
+        'continue skips the rest of the current iteration and jumps to the next.',
+        'The else clause on a loop executes only if the loop completed without break.',
+      ],
     },
   },
   {
@@ -112,6 +214,23 @@ export const TOPICS: TopicMeta[] = [
       hi: 'def और return के साथ पुन: प्रयोज्य कोड ब्लॉक्स बनाएं।',
       hinglish: 'Modular reusable code: def functions, parameters aur return values.',
     },
+    video: {
+      youtubeId: '9Os0o3wzS_I',
+      durationMinutes: 18,
+      instructor: 'Corey Schafer',
+      keyTimestamps: [
+        { title: 'Defining Functions with def', timeSec: 45 },
+        { title: 'Parameters & Default Arguments', timeSec: 310 },
+        { title: '*args and **kwargs unpacking', timeSec: 590 },
+        { title: 'Scope: Local vs Global Variables', timeSec: 840 },
+      ],
+      summaryNotes: [
+        'Functions promote DRY (Don\'t Repeat Yourself) clean architecture.',
+        'Default parameters are evaluated once when function is defined—avoid mutable defaults.',
+        '*args collects extra positional arguments into a tuple.',
+        '**kwargs collects extra keyword arguments into a dictionary.',
+      ],
+    },
   },
   {
     id: 'lists',
@@ -127,6 +246,23 @@ export const TOPICS: TopicMeta[] = [
       en: 'Store ordered collections, modify items with append/pop, and slice lists.',
       hi: 'ऑर्डर्ड कलेक्शन्स बनाएं, append/pop और लिस्ट स्लाइसिंग सीखें।',
       hinglish: 'Ordered elements store karna, append, pop, sort aur list indexing.',
+    },
+    video: {
+      youtubeId: 'W8KRzm-HUcc',
+      durationMinutes: 17,
+      instructor: 'Corey Schafer',
+      keyTimestamps: [
+        { title: 'Creating and Indexing Lists', timeSec: 30 },
+        { title: 'append, insert, extend & pop', timeSec: 280 },
+        { title: 'Sorting and Reversing Lists', timeSec: 540 },
+        { title: 'List Comprehensions Mastery', timeSec: 760 },
+      ],
+      summaryNotes: [
+        'Lists are mutable ordered sequences in Python.',
+        'append() adds one item to the end; extend() concatenates another iterable.',
+        'pop() removes and returns an item (by default the last one, O(1)).',
+        'List comprehensions ([x**2 for x in nums]) are concise and fast.',
+      ],
     },
   },
   {
@@ -144,6 +280,23 @@ export const TOPICS: TopicMeta[] = [
       hi: 'अपरिवर्तनीय (immutable) कलेक्शन्स और टुपल अनपैकिंग सीखें।',
       hinglish: 'Immutable data types, tuple packing/unpacking aur fixed records.',
     },
+    video: {
+      youtubeId: 'NI264Zfz1HM',
+      durationMinutes: 11,
+      instructor: 'Telusko',
+      keyTimestamps: [
+        { title: 'Tuples vs Lists', timeSec: 30 },
+        { title: 'Single element tuple syntax (x,)', timeSec: 210 },
+        { title: 'Tuple Unpacking & *rest', timeSec: 390 },
+        { title: 'NamedTuples for structured data', timeSec: 550 },
+      ],
+      summaryNotes: [
+        'Tuples are immutable; once defined, items cannot be added, removed, or changed.',
+        'Tuples take less memory than lists and can be used as dictionary keys if elements are hashable.',
+        'A single element tuple requires a trailing comma: (42,).',
+        'NamedTuples provide self-documenting tuple access with named fields.',
+      ],
+    },
   },
   {
     id: 'dictionaries',
@@ -159,6 +312,23 @@ export const TOPICS: TopicMeta[] = [
       en: 'Organize high-performance data with key-value pairs, keys(), and values().',
       hi: 'की-वैल्यू पेयर (key-value) के साथ तेज़ डेटा मैपिंग और एक्सेस सीखें।',
       hinglish: 'Key-value pairs, nested dicts aur fast dictionary lookups.',
+    },
+    video: {
+      youtubeId: 'daefaLgNkw0',
+      durationMinutes: 15,
+      instructor: 'Corey Schafer',
+      keyTimestamps: [
+        { title: 'Key-Value Pairs & Access', timeSec: 40 },
+        { title: 'Safe Lookups with .get()', timeSec: 270 },
+        { title: 'Iterating .keys(), .values(), .items()', timeSec: 510 },
+        { title: 'Dictionary Comprehensions & Merge (|)', timeSec: 720 },
+      ],
+      summaryNotes: [
+        'Dicts offer average O(1) time complexity for lookups, insertions, and deletions.',
+        'Dict keys must be immutable / hashable (strings, ints, tuples).',
+        'Use dict.get(key, default) to prevent KeyError exceptions.',
+        'Python 3.9+ supports the union operator | for merging dictionaries.',
+      ],
     },
   },
   {
@@ -176,6 +346,23 @@ export const TOPICS: TopicMeta[] = [
       hi: 'अद्वितीय तत्वों के साथ काम करें, डुप्लिकेट हटाएं और सेट ऑपरेशंस करें।',
       hinglish: 'Unique items only, union, intersection aur duplicates remove karna.',
     },
+    video: {
+      youtubeId: 'sBvaPopWOmQ',
+      durationMinutes: 12,
+      instructor: 'Corey Schafer',
+      keyTimestamps: [
+        { title: 'Creating Sets & Uniqueness', timeSec: 35 },
+        { title: 'Union (|) and Intersection (&)', timeSec: 250 },
+        { title: 'Difference (-) and Symmetric Diff (^)', timeSec: 460 },
+        { title: 'Frozensets & Performance', timeSec: 610 },
+      ],
+      summaryNotes: [
+        'Sets contain only unique items and are unordered.',
+        'Empty set must be created with set(), since {} creates an empty dictionary.',
+        'Fast membership testing (O(1)) compared to lists (O(N)).',
+        'Use frozenset when you need an immutable set to use as a dictionary key.',
+      ],
+    },
   },
   {
     id: 'file-handling',
@@ -191,6 +378,23 @@ export const TOPICS: TopicMeta[] = [
       en: 'Read and write virtual files safely using open(), with blocks, and readlines().',
       hi: 'open() और with स्टेटमेंट के साथ फ़ाइलों को पढ़ें और लिखें।',
       hinglish: 'Files open karna, text read & write karna using "with open()".',
+    },
+    video: {
+      youtubeId: 'U_Qe3Qz1xL4',
+      durationMinutes: 16,
+      instructor: 'Corey Schafer',
+      keyTimestamps: [
+        { title: 'Reading files with context manager (with)', timeSec: 45 },
+        { title: 'Modes: r, w, a, r+ and b', timeSec: 320 },
+        { title: 'Reading lines efficiently in loops', timeSec: 580 },
+        { title: 'Seeking, Tell & Buffer flush', timeSec: 790 },
+      ],
+      summaryNotes: [
+        'Always use "with open(...) as f:"—it automatically closes the file even on exceptions.',
+        'Mode "w" overwrites existing files; mode "a" appends to the end.',
+        'Iterating over the file object directly (for line in f:) is memory efficient.',
+        'In Pyodide, the in-memory Emscripten virtual file system supports standard open() calls.',
+      ],
     },
   },
   {
@@ -208,6 +412,23 @@ export const TOPICS: TopicMeta[] = [
       hi: 'try और except के साथ गलतियों को समझदारी से संभालें।',
       hinglish: 'Crashes prevent karo: try, except, ValueError handling and finally.',
     },
+    video: {
+      youtubeId: 'NIWwJbo-9_8',
+      durationMinutes: 14,
+      instructor: 'Corey Schafer',
+      keyTimestamps: [
+        { title: 'try and except basics', timeSec: 40 },
+        { title: 'Catching specific exceptions', timeSec: 280 },
+        { title: 'else and finally blocks', timeSec: 510 },
+        { title: 'Raising custom exceptions', timeSec: 720 },
+      ],
+      summaryNotes: [
+        'Never use bare "except:" without specifying exception types; it catches system exits.',
+        'The "else" block executes only if no exception occurred in "try".',
+        'The "finally" block always executes, useful for closing connections or releasing locks.',
+        'Create custom exceptions by subclassing Exception (class MyError(Exception): pass).',
+      ],
+    },
   },
   {
     id: 'modules',
@@ -223,6 +444,23 @@ export const TOPICS: TopicMeta[] = [
       en: 'Leverage Python built-in standard modules like math, random, and datetime.',
       hi: 'पायथन के अंतर्निहित मॉड्यूल जैसे math, random और datetime का उपयोग करें।',
       hinglish: 'Built-in modules import karna: math, random, datetime aur custom logic.',
+    },
+    video: {
+      youtubeId: 'CqvZ3vGoGs0',
+      durationMinutes: 15,
+      instructor: 'Corey Schafer',
+      keyTimestamps: [
+        { title: 'import and from ... import syntax', timeSec: 40 },
+        { title: 'The Python standard library overview', timeSec: 300 },
+        { title: 'math, random, datetime modules', timeSec: 540 },
+        { title: '__name__ == "__main__" explained', timeSec: 750 },
+      ],
+      summaryNotes: [
+        'Python comes with batteries included: math, random, datetime, json, os, and sys.',
+        'Use alias syntax (import math as m) for shorter namespace calls.',
+        'if __name__ == "__main__": allows code to run as script or import as module cleanly.',
+        'Pyodide includes the full standard library and handles packages in WebAssembly.',
+      ],
     },
   },
 ];

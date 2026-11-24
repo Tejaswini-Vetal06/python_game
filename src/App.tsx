@@ -18,11 +18,14 @@ import { AchievementsScreen } from './views/AchievementsScreen';
 import { ProgressScreen } from './views/ProgressScreen';
 import { ProfileScreen } from './views/ProfileScreen';
 import { SettingsScreen } from './views/SettingsScreen';
+import { VideoAcademyScreen } from './views/VideoAcademyScreen';
+import { LoginHistoryScreen } from './views/LoginHistoryScreen';
+import { SessionEndModal } from './components/session/SessionEndModal';
 import { TopicId } from './types/challenge';
 
 export const App: React.FC = () => {
   const { profile, setTopic } = useUser();
-  const { levelUpModal, closeLevelUpModal } = useGame();
+  const { levelUpModal, closeLevelUpModal, sessionRecapModal, closeSessionRecapModal } = useGame();
 
   // Screen state machine
   const [currentScreen, setCurrentScreen] = useState<string>(() => {
@@ -134,6 +137,12 @@ export const App: React.FC = () => {
 
           {currentScreen === 'profile' && <ProfileScreen />}
 
+          {currentScreen === 'videos' && (
+            <VideoAcademyScreen onPracticeTopic={handleStartTopic} />
+          )}
+
+          {currentScreen === 'login-history' && <LoginHistoryScreen />}
+
           {currentScreen === 'settings' && (
             <SettingsScreen
               onNavigateToDifficulty={() => setCurrentScreen('difficulty')}
@@ -156,6 +165,14 @@ export const App: React.FC = () => {
           oldLevel={levelUpModal.oldLevel}
           newLevel={levelUpModal.newLevel}
           onClose={closeLevelUpModal}
+        />
+      )}
+
+      {/* Active Session Recap Modal */}
+      {sessionRecapModal && (
+        <SessionEndModal
+          session={sessionRecapModal}
+          onClose={closeSessionRecapModal}
         />
       )}
     </div>

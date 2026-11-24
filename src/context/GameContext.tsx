@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { GameState, CompletedChallengeRecord, XPBreakdown, BadgeId, LevelInfo } from '../types/gamification';
-import { DailyStreak } from '../types/user';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import { GameState, CompletedChallengeRecord, XPBreakdown, LevelInfo } from '../types/gamification';
+import { DailyStreak, UserSessionState } from '../types/user';
 import { TopicId, DifficultyLevel } from '../types/challenge';
 import { storageService, DEFAULT_GAME_STATE, DEFAULT_STREAK } from '../services/storageService';
 import { getLevelForXP, LEVELS } from '../constants/levels';
@@ -20,7 +20,12 @@ interface GameContextType {
   currentLevel: LevelInfo;
   nextLevel: LevelInfo | null;
   levelUpModal: LevelUpEvent | null;
+  sessionState: UserSessionState;
+  sessionRecapModal: UserSessionState | null;
   closeLevelUpModal: () => void;
+  startSession: () => void;
+  endSession: () => void;
+  closeSessionRecapModal: () => void;
   recordChallengeCompletion: (
     challengeId: string,
     topicId: TopicId,
@@ -31,6 +36,7 @@ interface GameContextType {
     isCleanCode: boolean,
     userCode: string
   ) => XPBreakdown;
+  awardVideoBonusXP: (topicId: TopicId) => number;
   isChallengeCompleted: (challengeId: string) => boolean;
   getTopicCompletionPercent: (topicId: TopicId) => number;
   isTopicUnlocked: (topicIndex: number) => boolean;
@@ -43,6 +49,24 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [gameState, setGameState] = useState<GameState>(() => storageService.getGameState());
   const [streak, setStreak] = useState<DailyStreak>(() => storageService.getDailyStreak());
   const [levelUpModal, setLevelUpModal] = useState<LevelUpEvent | null>(null);
+  const [sessionRecapModal, setSessionRecapModal] = useState<UserSessionState | null>(null);
+
+  // Active Quest Session state
+  const [sessionState, setSessionState] = useState<UserSessionState>(() => {
+    const saved = storageService.getActiveSession();
+    if (saved && saved.isActive) return saved;
+    return {
+      sessionId: 'sess-' + Date.now(),
+      startedAt: new Date().toISOString(),
+      elapsedSeconds: 0,
+      sessionXpEarned: 0,
+      sessionQuestsCompleted: 0,
+      sessionHintsUsed: 0,
+      isActive: true,
+    };
+  });
+
+  const sessionTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     storageService.saveGameState(gameState);
@@ -52,6 +76,22 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     storageService.saveDailyStreak(streak);
   }, [streak]);
 
+  // Session tick timer
+  useEffect(() => {
+    if (sessionState.isActive) {
+      sessionTimerRef.current = setInterval(() => {
+        setSessionState((prev) => {
+          const next = { ...prev, elapsedSeconds: prev.elapsedSeconds + 1 };
+          storageService.saveActiveSession(next);
+          return next;
+        });
+      }, 1000);
+    }
+    return () => {
+      if (sessionTimerRef.current) clearInterval(sessionTimerRef.current);
+    };
+  }, [sessionState.isActive]);
+
   const currentLevel = getLevelForXP(gameState.totalXP);
   const nextLevel = LEVELS.find((l) => l.levelNumber === currentLevel.levelNumber + 1) || null;
 
@@ -60,18 +100,13 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const isTopicUnlocked = (topicIndex: number): boolean => {
-    // Topic 0 (Variables) is always unlocked
-    // A topic is unlocked if the topicIndex <= gameState.unlockedTopicIndex
     return topicIndex <= gameState.unlockedTopicIndex;
   };
 
   const getTopicCompletionPercent = (topicId: TopicId): number => {
-    // Count completed challenges for this topic
     const completedInTopic = Object.values(gameState.completedChallenges).filter(
       (c) => c.topicId === topicId
     ).length;
-    // Assume 30 challenges per topic (10 beginner, 10 intermediate, 10 advanced)
-    // Or normalized to at least 10 challenges for mastery calculation
     const totalBenchmark = 10;
     return Math.min(100, Math.round((completedInTopic / totalBenchmark) * 100));
   };
@@ -80,17 +115,73 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLevelUpModal(null);
   };
 
+  const closeSessionRecapModal = () => {
+    setSessionRecapModal(null);
+  };
+
   const triggerCelebration = () => {
     try {
       confetti({
-        particleCount: 80,
-        spread: 70,
+        particleCount: 90,
+        spread: 80,
         origin: { y: 0.6 },
         colors: ['#8b5cf6', '#3b82f6', '#06b6d4', '#10b981', '#fbbf24'],
       });
     } catch {
       // Confetti fallback
     }
+  };
+
+  const startSession = () => {
+    const newSession: UserSessionState = {
+      sessionId: 'sess-' + Date.now(),
+      startedAt: new Date().toISOString(),
+      elapsedSeconds: 0,
+      sessionXpEarned: 0,
+      sessionQuestsCompleted: 0,
+      sessionHintsUsed: 0,
+      isActive: true,
+    };
+    setSessionState(newSession);
+    storageService.saveActiveSession(newSession);
+    soundService.playSuccess();
+  };
+
+  const endSession = () => {
+    const finalSession = { ...sessionState, isActive: false };
+    setSessionState(finalSession);
+    storageService.saveActiveSession(null);
+    setSessionRecapModal(finalSession);
+    soundService.playLevelUp();
+    triggerCelebration();
+
+    // Reset next session ready
+    setTimeout(() => {
+      setSessionState({
+        sessionId: 'sess-' + Date.now(),
+        startedAt: new Date().toISOString(),
+        elapsedSeconds: 0,
+        sessionXpEarned: 0,
+        sessionQuestsCompleted: 0,
+        sessionHintsUsed: 0,
+        isActive: false,
+      });
+    }, 500);
+  };
+
+  const awardVideoBonusXP = (topicId: TopicId): number => {
+    const bonus = 30;
+    setGameState((prev) => ({
+      ...prev,
+      totalXP: prev.totalXP + bonus,
+    }));
+    setSessionState((prev) => ({
+      ...prev,
+      sessionXpEarned: prev.sessionXpEarned + bonus,
+    }));
+    soundService.playSuccess();
+    triggerCelebration();
+    return bonus;
   };
 
   const recordChallengeCompletion = (
@@ -105,14 +196,11 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   ): XPBreakdown => {
     const alreadyCompleted = isChallengeCompleted(challengeId);
 
-    // Calculate XP breakdown
     const baseXP = 50;
     const noHintsBonus = hintsUsedCount === 0 ? 20 : 0;
     const edgeCasesBonus = passedEdgeCases ? 15 : 0;
     const cleanCodeBonus = isCleanCode ? 15 : 0;
     const earnedThisRun = baseXP + noHintsBonus + edgeCasesBonus + cleanCodeBonus;
-
-    // Prevent duplicate XP rewards for already completed challenge
     const actualXPToAdd = alreadyCompleted ? 0 : earnedThisRun;
 
     const breakdown: XPBreakdown = {
@@ -123,6 +211,14 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       totalEarned: actualXPToAdd,
       isFirstCompletion: !alreadyCompleted,
     };
+
+    // Update active session metrics
+    setSessionState((prev) => ({
+      ...prev,
+      sessionXpEarned: prev.sessionXpEarned + actualXPToAdd,
+      sessionQuestsCompleted: prev.sessionQuestsCompleted + (alreadyCompleted ? 0 : 1),
+      sessionHintsUsed: prev.sessionHintsUsed + hintsUsedCount,
+    }));
 
     // Update streak
     const today = getTodayDateString();
@@ -175,56 +271,45 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         [challengeId]: newRecord,
       };
 
-      // Calculate Topic progression
       const currentTopicIdx = TOPICS.findIndex((t) => t.id === topicId);
       const completedInCurrentTopic = Object.values(updatedCompleted).filter(
         (c) => c.topicId === topicId
       ).length;
 
-      // Unlock next topic if user completes at least 3 challenges in current topic
       let newUnlockedIdx = prev.unlockedTopicIndex;
       if (currentTopicIdx === prev.unlockedTopicIndex && completedInCurrentTopic >= 3) {
         newUnlockedIdx = Math.min(TOPICS.length - 1, prev.unlockedTopicIndex + 1);
       }
 
-      // Check Badges
       const updatedBadges = { ...prev.badges };
       const nowIso = new Date().toISOString();
       const allCompletedList = Object.values(updatedCompleted);
 
-      // 1. First Program
       if (!updatedBadges['first-program'].unlockedAt && allCompletedList.length >= 1) {
         updatedBadges['first-program'].unlockedAt = nowIso;
       }
-      // 2. First String Creator
       if (!updatedBadges['first-string'].unlockedAt && topicId === 'strings') {
         updatedBadges['first-string'].unlockedAt = nowIso;
       }
-      // 3. Debug Detective (succeeded after >1 attempt)
       if (!updatedBadges['debug-detective'].unlockedAt && attemptsCount > 1) {
         updatedBadges['debug-detective'].unlockedAt = nowIso;
       }
-      // 4. Loop Master (5 loop challenges)
       const loopsDone = allCompletedList.filter((c) => c.topicId === 'loops').length;
       if (!updatedBadges['loop-master'].unlockedAt && loopsDone >= 5) {
         updatedBadges['loop-master'].unlockedAt = nowIso;
       }
-      // 5. Function Ninja (5 function challenges)
       const functionsDone = allCompletedList.filter((c) => c.topicId === 'functions').length;
       if (!updatedBadges['function-ninja'].unlockedAt && functionsDone >= 5) {
         updatedBadges['function-ninja'].unlockedAt = nowIso;
       }
-      // 6. List Explorer (5 list challenges)
       const listsDone = allCompletedList.filter((c) => c.topicId === 'lists').length;
       if (!updatedBadges['list-explorer'].unlockedAt && listsDone >= 5) {
         updatedBadges['list-explorer'].unlockedAt = nowIso;
       }
-      // 7. Dictionary Wizard (5 dictionary challenges)
       const dictsDone = allCompletedList.filter((c) => c.topicId === 'dictionaries').length;
       if (!updatedBadges['dict-wizard'].unlockedAt && dictsDone >= 5) {
         updatedBadges['dict-wizard'].unlockedAt = nowIso;
       }
-      // 8. Problem Solver (5 challenges with 0 hints)
       const noHintDone = allCompletedList.filter((c) => c.hintsUsedCount === 0).length;
       if (!updatedBadges['problem-solver'].unlockedAt && noHintDone >= 5) {
         updatedBadges['problem-solver'].unlockedAt = nowIso;
@@ -260,8 +345,14 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         currentLevel,
         nextLevel,
         levelUpModal,
+        sessionState,
+        sessionRecapModal,
         closeLevelUpModal,
+        startSession,
+        endSession,
+        closeSessionRecapModal,
         recordChallengeCompletion,
+        awardVideoBonusXP,
         isChallengeCompleted,
         getTopicCompletionPercent,
         isTopicUnlocked,

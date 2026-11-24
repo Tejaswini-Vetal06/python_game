@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, BookOpen, Code2, Award, User } from 'lucide-react';
+import { LayoutDashboard, BookOpen, Code2, PlayCircle, Award, User } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
 import { TRANSLATIONS } from '../../constants/translations';
 import { soundService } from '../../services/soundService';
@@ -20,6 +20,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({
     { id: 'dashboard', label: t.dashboard, icon: LayoutDashboard },
     { id: 'topics', label: t.quests, icon: BookOpen },
     { id: 'challenge', label: t.editor, icon: Code2 },
+    { id: 'videos', label: 'Academy', icon: PlayCircle },
     { id: 'badges', label: t.achievements, icon: Award },
     { id: 'profile', label: t.profile, icon: User },
   ];

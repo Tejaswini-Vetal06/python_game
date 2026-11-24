@@ -9,6 +9,8 @@ import {
   User,
   Shield,
   Download,
+  PlayCircle,
+  History,
 } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
 import { useGame } from '../../context/GameContext';
@@ -42,8 +44,10 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
     { id: 'dashboard', label: t.dashboard, icon: LayoutDashboard },
     { id: 'topics', label: t.quests, icon: BookOpen },
     { id: 'challenge', label: t.editor, icon: Code2 },
+    { id: 'videos', label: 'Video Academy', icon: PlayCircle },
     { id: 'badges', label: t.achievements, icon: Award },
     { id: 'progress', label: 'Progress & Stats', icon: BarChart3 },
+    { id: 'login-history', label: 'Login & Security', icon: History },
     { id: 'profile', label: t.profile, icon: User },
     { id: 'settings', label: t.settings, icon: Settings },
   ];

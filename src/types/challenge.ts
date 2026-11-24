@@ -65,6 +65,14 @@ export interface Challenge {
   edgeCasesDescription?: string;
 }
 
+export interface TopicVideoMeta {
+  youtubeId: string;
+  durationMinutes: number;
+  instructor: string;
+  keyTimestamps: { title: string; timeSec: number }[];
+  summaryNotes: string[];
+}
+
 export interface TopicMeta {
   id: TopicId;
   order: number;
@@ -80,4 +88,5 @@ export interface TopicMeta {
     hi: string;
     hinglish: string;
   };
+  video?: TopicVideoMeta;
 }

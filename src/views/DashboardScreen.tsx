@@ -8,15 +8,18 @@ import { Card } from '../components/common/Card';
 import { Button } from '../components/common/Button';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { BadgeIcon } from '../components/common/BadgeIcon';
+import { SessionStartBanner } from '../components/session/SessionStartBanner';
 import {
   Sparkles,
   Play,
   Flame,
   Award,
-  BookOpen,
   Calendar,
   ChevronRight,
   TrendingUp,
+  Video,
+  History,
+  RotateCcw,
 } from 'lucide-react';
 
 interface DashboardScreenProps {
@@ -45,15 +48,18 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
   const completedCount = Object.keys(gameState.completedChallenges).length;
 
   return (
-    <div className="space-y-5 pb-20 md:pb-8 max-w-5xl mx-auto animate-fade-in">
-      {/* 1. Hero Welcome & Quick Resume Card */}
+    <div className="space-y-5 pb-24 md:pb-8 max-w-5xl mx-auto animate-fade-in">
+      {/* Active Session Start / End HUD Banner */}
+      <SessionStartBanner />
+
+      {/* 1. Hero Welcome & Smart Resume Card */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-game-purpleDark/80 via-game-surface to-game-card border border-game-purpleLight/40 p-5 sm:p-7 shadow-glow-purple">
         <div className="absolute top-0 right-0 w-64 h-64 bg-game-cyan/10 rounded-full blur-3xl pointer-events-none" />
         
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-game-purple/30 border border-game-purpleLight/50 text-game-purpleLight text-xs font-semibold uppercase tracking-wider mb-2">
-              <Sparkles className="w-3.5 h-3.5" />
+              <Sparkles className="w-3.5 h-3.5 text-game-gold" />
               <span>Welcome Back, {profile.username}</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white">
@@ -64,16 +70,25 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
             </p>
           </div>
 
-          <Button
-            variant="primary"
-            size="lg"
-            glow
-            onClick={() => onNavigate('challenge')}
-            icon={<Play className="w-5 h-5 fill-current" />}
-            className="sm:self-center shrink-0"
-          >
-            {completedCount > 0 ? t.continueQuest : t.startQuest}
-          </Button>
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 shrink-0">
+            <Button
+              variant="primary"
+              size="lg"
+              glow
+              onClick={() => onNavigate('challenge')}
+              icon={completedCount > 0 ? <RotateCcw className="w-5 h-5" /> : <Play className="w-5 h-5 fill-current" />}
+            >
+              {completedCount > 0 ? t.continueQuest : t.startQuest}
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => onNavigate('videos')}
+              icon={<Video className="w-5 h-5" />}
+            >
+              Videos
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -156,7 +171,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
             value={xpProgress}
             max={xpTarget}
             label={currentLevel.title}
-            subLabel={nextLevel ? `Target: ${nextLevel.title}` : 'Max Milestone'}
+            subLabel={nextLevel ? `Next: ${nextLevel.title}` : 'Max Milestone'}
             color="purple"
             size="md"
           />
@@ -186,7 +201,62 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
         </Card>
       </div>
 
-      {/* 4. Weekly Learning Activity Heatmap */}
+      {/* 4. Quick Action Banners: Video Academy + Login History */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card
+          hoverable
+          onClick={() => onNavigate('videos')}
+          className="border-game-purple/40 bg-gradient-to-br from-game-surface to-game-purple/10 cursor-pointer"
+        >
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-game-purple/20 border border-game-purple/40 flex items-center justify-center text-game-purpleLight shrink-0">
+                <Video className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
+                  <span>Video Academy</span>
+                  <span className="text-[10px] bg-game-purple/20 text-game-purpleLight px-1.5 py-0.2 rounded font-mono">
+                    NEW
+                  </span>
+                </h3>
+                <p className="text-xs text-game-textMuted mt-0.5">
+                  Watch visual concept lectures with cheat sheets & bookmarks.
+                </p>
+              </div>
+            </div>
+            <ChevronRight className="w-4 h-4 text-game-textSubtle mt-1 shrink-0" />
+          </div>
+        </Card>
+
+        <Card
+          hoverable
+          onClick={() => onNavigate('login-history')}
+          className="border-game-cyan/40 bg-gradient-to-br from-game-surface to-game-cyan/10 cursor-pointer"
+        >
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-game-cyan/20 border border-game-cyan/40 flex items-center justify-center text-game-cyan shrink-0">
+                <History className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
+                  <span>Login & Session Log</span>
+                  <span className="text-[10px] bg-game-cyan/20 text-game-cyan px-1.5 py-0.2 rounded font-mono">
+                    SECURITY
+                  </span>
+                </h3>
+                <p className="text-xs text-game-textMuted mt-0.5">
+                  Track devices, session durations, and account credentials.
+                </p>
+              </div>
+            </div>
+            <ChevronRight className="w-4 h-4 text-game-textSubtle mt-1 shrink-0" />
+          </div>
+        </Card>
+      </div>
+
+      {/* 5. Weekly Learning Activity Heatmap */}
       <Card>
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
@@ -237,7 +307,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
         </div>
       </Card>
 
-      {/* 5. Recent Badges Showcase */}
+      {/* 6. Recent Badges Showcase */}
       <Card>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
